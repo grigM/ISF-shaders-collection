@@ -28,12 +28,33 @@
 		"MIN" :	0.1,
 		"MAX" :	2.0
 	},
+    {
+		"NAME" :	"itCount",
+		"TYPE" :	"float",
+		"DEFAULT" :	19,
+		"MIN" :	1,
+		"MAX" :	25
+	},
 	{
 		"NAME" :	"loops",
 		"TYPE" :	"float",
 		"DEFAULT" :	13.0,
 		"MIN" :	2.0,
 		"MAX" :	26.0
+	},
+    {
+		"NAME" :	"p1",
+		"TYPE" :	"float",
+		"DEFAULT" : -1.5,
+		"MIN" :  	-3.0,
+		"MAX" : 	1.5
+	},
+	{
+		"NAME" :	"p2",
+		"TYPE" :	"float",
+		"DEFAULT" : 4.0,
+		"MIN" :  	0.0,
+		"MAX" : 	8.0
 	},
     {
 		"NAME" :	"c1",
@@ -131,9 +152,9 @@ void main() {
     vec2 uv = gl_FragCoord.xy/RENDERSIZE.xy;
     float L = floor(loops);	
 	float T = TIME*rate + YY.x;
-	vec2 z = -1.5 + 4.0*uv;
+	vec2 z = p1 + p2*uv;
 	vec3 col = vec3(1.0);
-	for( int j=0; j<19; j++ )
+	for( int j=0; j<int(itCount); j++ )
 	{
         float s = float(j)/L;
 		float f = multiplier*(0.5 + 2.0*fract(sin(s*pow(abs(YY.y+L),L))*43758.5453123));
