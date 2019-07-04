@@ -81,12 +81,21 @@
 		"DEFAULT": 0.3,
 		"MIN": -0.3,
 		"MAX": 0.6
-	}
+	},
+	{
+      "NAME": "desaturation",
+      "TYPE": "float",
+      "MIN": 0.0,
+      "MAX": 1,
+      "DEFAULT": 0.0
+    }
 
   ]
 }
 */
 
+
+		
 
 //Ether by nimitz (twitter: @stormoid)
 
@@ -111,5 +120,16 @@ void main(){
         cl = cl*l + (1.-smoothstep(0., 2.5, rz))*.7*l;
 		d += min(rz, 1.);
 	}
-    gl_FragColor = vec4(cl, 1.);
+	
+	
+	
+	vec3 grayXfer = vec3(0.3, 0.59, 0.11);
+	vec3 gray = vec3(dot(grayXfer, cl));
+		
+    
+  
+  
+    
+    
+    gl_FragColor = vec4(mix(cl, gray, desaturation), 1.);
 }

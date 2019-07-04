@@ -11,8 +11,106 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/Ml3SRf by blackpolygon.  Playing with the examples of Fractal brownian motion from the book of shaders\n\nhttps:\/\/thebookofshaders.com\/13\/",
   "INPUTS" : [
-
-  ]
+  	{
+      "NAME" : "NUM_OCTAVES",
+      "TYPE" : "float",
+      "MAX" : 8,
+      "DEFAULT" : 5,
+      "MIN" : 1
+    },
+    {
+      "NAME" : "add_color_blue",
+      "TYPE" : "float",
+      "MAX" : 0.5,
+      "DEFAULT" : 0,
+      "MIN" : 0
+    },
+    {
+      "NAME" : "brightnes_param",
+      "TYPE" : "float",
+      "MAX" : 0.5,
+      "DEFAULT" : 0.5,
+      "MIN" : 0
+    },
+    {
+      "NAME" : "noise_scale",
+      "TYPE" : "float",
+      "MAX" : 6,
+      "DEFAULT" : 2.2000000000000002,
+      "MIN" : 0
+    },
+    {
+      "NAME" : "cos_details",
+      "TYPE" : "float",
+      "MAX" : 1.5,
+      "DEFAULT" : 0.5,
+      "MIN" : 0.10000000000000001
+    },
+    {
+      "NAME" : "sin_details",
+      "TYPE" : "float",
+      "MAX" : 1,
+      "DEFAULT" : 0.5,
+      "MIN" : 0
+    },
+    {
+      "NAME" : "speed_a",
+      "TYPE" : "float",
+      "MAX" : 20,
+      "DEFAULT" : 1,
+      "MIN" : 0
+    },
+    {
+      "NAME" : "speed_b",
+      "TYPE" : "float",
+      "MAX" : 20,
+      "DEFAULT" : 1,
+      "MIN" : 0
+    },
+    
+    
+  	{
+      "NAME" : "use_mask",
+      "TYPE" : "bool",
+      "DEFAULT" : 1
+    },
+    {
+      "NAME" : "mask_ang_numb",
+      "TYPE" : "float",
+      "MAX" : 50,
+      "DEFAULT" : 6,
+      "MIN" : 4
+    },
+    
+    
+    {
+      "NAME" : "mask_smooth",
+      "TYPE" : "float",
+      "MAX" : 0.45000000000000001,
+      "DEFAULT" : 0.45000000000000001,
+      "MIN" : 0
+    },
+    {
+      "NAME" : "mask_scale",
+      "TYPE" : "float",
+      "MAX" : 10,
+      "DEFAULT" : 1,
+      "MIN" : 0
+    },
+    
+    {
+      "NAME" : "mask_over_color",
+      "TYPE" : "color",
+      "DEFAULT" : [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    
+  ],
+  "ISFVSN" : "2"
 }
 */
 
@@ -51,18 +149,18 @@ float noise (in vec2 _st) {
             (d - b) * u.x * u.y;
 }
 
-#define NUM_OCTAVES 5
+
 
 float fbm ( in vec2 _st) {
-    float v = 0.0;
-    float a = 0.5;
+    float v = add_color_blue;
+    float a = brightnes_param;
     vec2 shift = vec2(20.0);
     // Rotate to reduce axial bias
-    mat2 rot = mat2(cos(0.5), sin(0.5), 
-                    -sin(0.5), cos(0.50));
-    for (int i = 0; i < NUM_OCTAVES; ++i) {
+    mat2 rot = mat2(cos(cos_details), sin(sin_details), 
+                    -sin(sin_details), cos(cos_details));
+    for (int i = 0; i < int(NUM_OCTAVES); ++i) {
         v += a * noise(_st);
-        _st = rot * _st * 2.2 + shift;
+        _st = rot * _st * noise_scale + shift;
         a *= 0.5;
     }
     return v;
@@ -83,8 +181,8 @@ void main(){
     b.x = fbm( st + 4.*a);
     b.y = fbm( st);
 
-    c.x = fbm( st + 7.0*b + vec2(10.7,.2)+ 0.215*TIME );
-    c.y = fbm( st + 3.944*b + vec2(.3,12.8)+ 0.16*TIME);
+    c.x = fbm( st + 7.0*b + vec2(10.7,.2)+ 0.215*(TIME*speed_a) );
+    c.y = fbm( st + 3.944*b + vec2(.3,12.8)+ 0.16*(TIME*speed_b));
 
     float f = fbm(st+b+c);
 
@@ -93,17 +191,20 @@ void main(){
     
     st = st/3.5;
    
-    // Make the hexagon mask
-    int N = 6;
+    
     float ata = atan(st.x,st.y)+PI;
-    float r = TWO_PI/float(N);
+    float r = TWO_PI/float(int(mask_ang_numb));
     float dist = cos(floor(.5+ata/r)*r-ata)*length(st);
     
-    float hexagonMask = 1.0-smoothstep(.45,.452,dist);
+    float hexagonMask = 1.0-smoothstep(mask_smooth,.452,dist*mask_scale);
     float bgMask = 1.0 - hexagonMask;
     
     vec3 finalColor = vec3(f*1.9*color);
-    vec3 bgColor = vec3(0.950,0.951,0.90);
-
-    gl_FragColor = vec4( bgColor*bgMask + finalColor*hexagonMask, 1.);
+    vec3 bgColor = vec3(mask_over_color);
+	
+	if(use_mask){
+    	gl_FragColor = vec4( bgColor*bgMask + finalColor*hexagonMask, 1.);
+	}else{
+		gl_FragColor = vec4(finalColor , 1.);
+	}
 }

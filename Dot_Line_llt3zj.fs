@@ -13,7 +13,28 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/llt3zj by EanJee.  2D composition practice",
   "INPUTS" : [
-
+	{
+			"NAME": "circleMaxSize",
+			"TYPE": "float",
+			"DEFAULT": 0.4,
+			"MIN": 0.0,
+			"MAX": 5.0
+		},
+		{
+			"NAME": "repeatTime",
+			"TYPE": "float",
+			"DEFAULT": 32.0,
+			"MIN": 0.0,
+			"MAX": 64.0
+		},
+		{
+			"NAME": "speed",
+			"TYPE": "float",
+			"DEFAULT": 2.5,
+			"MIN": 0.0,
+			"MAX": 50.0
+		},
+				
   ]
 }
 */
@@ -38,7 +59,7 @@ void main(){
     vec2 coefReversed = 1.0 - coef;
     
     // tile on longer one
-    float repeatTime = 32.0;
+    //float repeatTime = 32.0;
     vec2 repeat = vec2(1.0) + coef * (repeatTime - 1.0);
     vec2 stTiled = fract(st * repeat);
     
@@ -49,11 +70,11 @@ void main(){
     // transform
     vec2 sliceIndex = floor(st * repeat);
     float phase = max(sliceIndex.x, sliceIndex.y) * PI / repeatTime * 2.0;
-    float offsetValue = sin(TIME * 2.5 + phase);
+    float offsetValue = sin(TIME * speed + phase);
     vec2 offset = offsetValue * coefReversed * 0.08;
     stTiled += offset;
   
     // draw circle
-    vec3 color = drawCircleFill(stTiled, resolution, 0.4 * abs(offsetValue), 0.1);
+    vec3 color = drawCircleFill(stTiled, resolution, circleMaxSize * abs(offsetValue), 0.1);
     gl_FragColor = vec4(color, 1.0);
 }

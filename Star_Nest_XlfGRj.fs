@@ -14,7 +14,86 @@
     {
       "NAME" : "iMouse",
       "TYPE" : "point2D"
-    }
+    },
+    
+		
+		{
+			"NAME": "volsteps",
+			"TYPE": "float",
+			"DEFAULT": 20,
+			"MIN": 0.0,
+			"MAX": 40.0
+		},
+		
+		{
+			"NAME": "iterations",
+			"TYPE": "float",
+			"DEFAULT": 17,
+			"MIN": 0.0,
+			"MAX": 25
+		},
+		
+		{
+			"NAME": "formuparam",
+			"TYPE": "float",
+			"DEFAULT": 0.53,
+			"MIN": 0.0,
+			"MAX": 1
+		},
+		
+		{
+			"NAME": "stepsize",
+			"TYPE": "float",
+			"DEFAULT": 0.1,
+			"MIN": 0.0,
+			"MAX": 0.2
+		},
+		
+		{
+			"NAME": "zoom",
+			"TYPE": "float",
+			"DEFAULT": 0.800,
+			"MIN": 0.0,
+			"MAX": 3.0
+		},
+		{
+			"NAME": "speed",
+			"TYPE": "float",
+			"DEFAULT": 0.010,
+			"MIN": 0.0,
+			"MAX": 0.1
+		},
+		{
+			"NAME": "brightness",
+			"TYPE": "float",
+			"DEFAULT": 0.0015,
+			"MIN": 0.0005,
+			"MAX": 0.01
+		},
+		
+		{
+			"NAME": "darkmatter",
+			"TYPE": "float",
+			"DEFAULT": 0.300,
+			"MIN": 0.001,
+			"MAX": 1.0
+		},
+		
+		{
+			"NAME": "distfading",
+			"TYPE": "float",
+			"DEFAULT": 0.73,
+			"MIN": 0.001,
+			"MAX": 0.8
+		},
+		
+		{
+			"NAME": "saturation",
+			"TYPE": "float",
+			"DEFAULT": 0.850,
+			"MIN": 0.001,
+			"MAX": 1.5
+		}
   ]
 }
 */
@@ -24,20 +103,20 @@
 
 // This content is under the MIT License.
 
-#define iterations 17
-#define formuparam 0.53
+//#define iterations 17
+//#define formuparam 0.53
 
-#define volsteps 20
-#define stepsize 0.1
+//#define volsteps 20
+//#define stepsize 0.1
 
-#define zoom   0.800
+//#define zoom   0.800
 #define tile   0.850
-#define speed  0.010 
+//#define speed  0.010 
 
-#define brightness 0.0015
-#define darkmatter 0.300
-#define distfading 0.730
-#define saturation 0.850
+//#define brightness 0.0015
+//#define darkmatter 0.300
+//#define distfading 0.730
+//#define saturation 0.850
 
 
 void main()
@@ -63,11 +142,11 @@ void main()
 	//volumetric rendering
 	float s=0.1,fade=1.;
 	vec3 v=vec3(0.);
-	for (int r=0; r<volsteps; r++) {
+	for (int r=0; r<int(volsteps); r++) {
 		vec3 p=from+s*dir*.5;
 		p = abs(vec3(tile)-mod(p,vec3(tile*2.))); // tiling fold
 		float pa,a=pa=0.;
-		for (int i=0; i<iterations; i++) { 
+		for (int i=0; i<int(iterations); i++) { 
 			p=abs(p)/dot(p,p)-formuparam; // the magic formula
 			a+=abs(length(p)-pa); // absolute sum of average change
 			pa=length(p);

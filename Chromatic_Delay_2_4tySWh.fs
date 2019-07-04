@@ -12,32 +12,68 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/4tySWh by DifferentName.  Modified from shaders by LordSk and Sintel, to add more color variety!",
   "INPUTS" : [
-
+	{
+			"NAME": "RADIUS",
+			
+			"TYPE": "float",
+			"MIN": 0.0,
+			"MAX": 1.0,
+			"DEFAULT": 0.75
+		},
+		{
+			"NAME": "AB_SCALE",
+			"TYPE": "float",
+			"MIN": 0.0,
+			"MAX": 3.0,
+			"DEFAULT": 0.75
+		},
+		{
+			"NAME": "RED_SPEED",
+			"TYPE": "float",
+			"MIN": 0.0,
+			"MAX": 5.0,
+			"DEFAULT": 1.0
+		}
+		,
+		{
+			"NAME": "GREEN_SPEED",
+			"TYPE": "float",
+			"MIN": 0.0,
+			"MAX": 5.0,
+			"DEFAULT": 1.0
+		}
+		,
+		{
+			"NAME": "BLUE_SPEED",
+			"TYPE": "float",
+			"MIN": 0.0,
+			"MAX": 5.0,
+			"DEFAULT": 1.0
+		}
   ]
 }
 */
 
 
-#define RADIUS 0.75
-#define AB_SCALE 0.75
+
 
 float diskColorr(in vec2 uv, vec2 offset)
 {
-    uv = uv - smoothstep(0.01,1.8,IMG_NORM_PIXEL(iChannel0,mod((uv*1.0 - vec2((TIME+0.06) /3.6,(TIME+0.06) /9.2)) + offset,1.0)).r) * 0.3;
+    uv = uv - smoothstep(0.01,1.8,IMG_NORM_PIXEL(iChannel0,mod((uv*1.0 - vec2(((TIME*RED_SPEED)+0.06) /3.6,((TIME*RED_SPEED)+0.06) /9.2)) + offset,1.0)).r) * 0.3;
     
     float d = length(uv)-RADIUS;
     return smoothstep(0.01,0.015,d);
 }
 float diskColorg(in vec2 uv, vec2 offset)
 {
-    uv = uv - smoothstep(0.01,1.8,IMG_NORM_PIXEL(iChannel0,mod((uv*1.0 - vec2(TIME /3.0,(TIME) /8.0)) + offset,1.0)).r) * 0.3;
+    uv = uv - smoothstep(0.01,1.8,IMG_NORM_PIXEL(iChannel0,mod((uv*1.0 - vec2((TIME*GREEN_SPEED) /3.0,((TIME*GREEN_SPEED)) /8.0)) + offset,1.0)).r) * 0.3;
     
     float d = length(uv)-RADIUS;
     return smoothstep(0.01,0.015,d);
 }
 float diskColorb(in vec2 uv, vec2 offset)
 {
-    uv = uv - smoothstep(0.01,1.8,IMG_NORM_PIXEL(iChannel0,mod((uv*1.0 - vec2((TIME-0.06) /2.65,(TIME-0.06) /7.0)) + offset,1.0)).r) * 0.3;
+    uv = uv - smoothstep(0.01,1.8,IMG_NORM_PIXEL(iChannel0,mod((uv*1.0 - vec2(((TIME*BLUE_SPEED)-0.06) /2.65,((TIME*BLUE_SPEED)-0.06) /7.0)) + offset,1.0)).r) * 0.3;
     
     float d = length(uv)-RADIUS;
     return smoothstep(0.01,0.015,d);

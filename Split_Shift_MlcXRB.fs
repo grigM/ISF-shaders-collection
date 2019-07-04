@@ -19,6 +19,13 @@
 			"MIN": 0.0
 		},
 		{
+			"NAME": "ofset",
+			"TYPE": "float",
+			"DEFAULT": 0.0,
+			"MAX": 2.0,
+			"MIN": -2.0
+		},
+		{
 			"NAME": "band",
 			"TYPE": "float",
 			"DEFAULT": 0.5,
@@ -47,19 +54,19 @@ void main()
     
     if(t1 < -1.*band)
     {
-    	offset = -1. * sin(TIME)*speed;
+    	offset = -1. * (sin(TIME*speed)-ofset);
     }
     else if(t1 > -1.*band && t1 < 0.)
     {
-    	offset = 1.*sin(TIME)*speed;
+    	offset = 1.*(sin((TIME*speed)-ofset));
     }
     if(t1 > 0. && t1 < 1.*band)
     {
-        offset = -1.*sin(TIME)*speed;
+        offset = -1.*sin((TIME*speed)-ofset);
     }
     else if(t1 >band && t1 < 2.*band)
     {
-    	offset = 1. * sin(TIME)*speed;
+    	offset = 1. * sin((TIME*speed)-ofset);
     }
 
 	vec4 col0 = IMG_NORM_PIXEL(inputImage,mod(uv + vec2(offset, offset),1.0),-10.);

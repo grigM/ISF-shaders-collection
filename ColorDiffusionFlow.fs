@@ -75,7 +75,15 @@
       			"DEFAULT" :	0.25,
       			"MIN" : 	0.001,
       			"MAX" :		0.9
-    	}
+    	},
+    	{
+      "NAME": "desaturation",
+      "TYPE": "float",
+      "MIN": 0.0,
+      "MAX": 1,
+      "DEFAULT": 0.0
+    },
+
   ]
 }*/
 
@@ -107,5 +115,14 @@ void main() {
     	p=newp+log(DATE.w)/loopcycle;
   }
   vec3 col=vec3(cos(p.x+p.y+3.0*color1)*0.5+0.5,sin(p.x+p.y+6.0*cycle1)*0.5+0.5,(sin(p.x+p.y+9.0*color2)+cos(p.x+p.y+12.0*cycle2))*0.25+.5);
-  gl_FragColor=vec4(col*col, 1.0);
+  
+  
+  
+  
+  	vec3 grayXfer = vec3(0.3, 0.59, 0.11);
+	vec3 gray = vec3(dot(grayXfer, col));
+	    
+    
+    
+  gl_FragColor=vec4(mix(col*col, gray, desaturation), 1.0);
 }

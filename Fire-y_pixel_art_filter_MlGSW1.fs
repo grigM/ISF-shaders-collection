@@ -26,10 +26,10 @@ vec2 texel_size = vec2(6.0,6.0);
 
 void main()
 {    
-    gl_FragCoord.xy = floor(gl_FragCoord.xy/texel_size);	// Pixelify
-    gl_FragCoord.xy = RENDERSIZE.xy / texel_size;	// Correct scale
+	vec2 uv = floor(gl_FragCoord.xy/texel_size);	// Pixelify
+    uv.xy = RENDERSIZE.xy / texel_size;	// Correct scale
 
-    float reaction_coordinate = IMG_NORM_PIXEL(inputImage,mod(gl_FragCoord.xy,1.0)).r;	// Use red channel
+    float reaction_coordinate = IMG_NORM_PIXEL(inputImage,mod(uv.xy,1.0)).r;	// Use red channel
     
     float mixval = (((reaction_coordinate - 0.55) * 10.0 + 0.5) * 2.0);
     

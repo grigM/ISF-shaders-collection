@@ -70,7 +70,14 @@
 	{
 		"NAME": "showRain",
 		"TYPE": "bool",
-		"DEFAULT": 1,
+		"DEFAULT": 0,
+		"MIN": 0,
+		"MAX": 1
+	},
+	{
+		"NAME": "showSky",
+		"TYPE": "bool",
+		"DEFAULT": 0,
 		"MIN": 0,
 		"MAX": 1
 	},
@@ -468,7 +475,8 @@ void main( void ) {
     col += TailLights(0., t);
     col += TailLights(.5, t);
     
-    col += sat(rd.y)*vec3(.6, .5, .9);
-    
+    if(showSky){
+    	col += sat(rd.y)*vec3(.6, .5, .9);
+    }
 	gl_FragColor = vec4(col, 1);
 }

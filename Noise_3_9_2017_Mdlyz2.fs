@@ -10,10 +10,42 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/Mdlyz2 by Jops.  noise",
   "INPUTS" : [
-    {
-      "NAME" : "iMouse",
-      "TYPE" : "point2D"
-    }
+    
+    	{
+			"NAME": "noise_amp",
+			"TYPE": "float",
+			"MIN": 0.0,
+			"MAX": 1.0,
+			"DEFAULT": 0.06
+		},
+		{
+			"NAME": "speed",
+			"TYPE": "float",
+			"MIN": 0.0,
+			"MAX": 4.0,
+			"DEFAULT": 1.0
+		},
+		{
+			"NAME": "fract_count",
+			"TYPE": "float",
+			"MIN": 0.0,
+			"MAX": 100.0,
+			"DEFAULT": 10.0
+		},
+		{
+			"NAME": "fract_speed",
+			"TYPE": "float",
+			"MIN": 0.0,
+			"MAX": 15.0,
+			"DEFAULT": 2.5
+		},
+		{
+			"NAME": "HORIZONTAL",
+			"TYPE": "bool",
+			"DEFAULT": 0.0
+		}
+		
+
   ]
 }
 */
@@ -111,7 +143,7 @@ void main() {
     uv.x *= ratio;
     
     vec2 pos = vec2(0.5 * ratio, 0.5);
-    float offset = noise(uv * 6. + TIME) * 0.06;
+    float offset = noise(uv * 6. + (TIME)) * noise_amp;
     
   
     ////////////////////////////////////////////////////////////////////////////
@@ -149,11 +181,28 @@ void main() {
     //////////////////////////////////////////////////////////////////////////////////
     //value *= fract(sin(uv.x * uv.y * 10000.)*100000.);
     
-    float id = floor(uv.x*10.);
-    float r = rand(vec2(id));
+    float id;
+    float r; 
     
-    uv.y += r*2.5 * -TIME / 2. ;
-    uv.y = fract(uv.y);
+    if(HORIZONTAL){
+    	
+    	id = floor(uv.y*fract_count);
+    	r = rand(vec2(id));
+    
+    	uv.x += r*fract_speed * -(TIME*speed) / 2. ;
+   		uv.x = fract(uv.x);
+   		
+    }else{
+    	
+    	
+    
+    	id = floor(uv.x*fract_count);
+    	r = rand(vec2(id));
+    
+    	uv.y += r*fract_speed * -(TIME*speed) / 2. ;
+   		uv.y = fract(uv.y);
+    }
+    
     
     value = createCircle(uv + offset , vec2(0.5 *  ratio * abs(sin(TIME) + 1.0),      0.5), 0.1);
     value += createCircle(uv + offset, vec2(0.5 * ratio * abs(sin(TIME -.11) + 1.0), 0.4), 0.1);

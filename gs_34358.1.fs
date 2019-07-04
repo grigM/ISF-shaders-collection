@@ -12,6 +12,13 @@
 			"MAX": 10.0
 		},
 		{
+			"NAME": "ofset",
+			"TYPE": "float",
+			"DEFAULT": 0.0,
+			"MIN": 0.0,
+			"MAX": 4.0
+		},
+		{
 			"NAME": "line_thick",
 			"TYPE": "float",
 			"DEFAULT": 1.0,
@@ -136,7 +143,7 @@ void rotate (float angle, vec3 axis){
 void draw (){
 	perspective(PI / 2.);
 	translate(vec3(0, 0, -10));
-	rotate(TIME*speed, vec3(0.5233, 0.156723, 0.36235));
+	rotate((TIME*speed)-ofset, vec3(0.5233, 0.156723, 0.36235));
 
 	drawLine(vec3(-1, -1, -1), vec3(-1, 1, -1));
 	drawLine(vec3(-1, -1, -1), vec3(1, -1, -1));

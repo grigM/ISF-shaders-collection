@@ -1,96 +1,99 @@
-// SaturdayShader Week 34 : Kaleidolines
-// Joseph Fiola (http://www.joefiola.com)
-// 2016-04-09
-
-// Based on Shadertoy created by Vinicius Graciano Santos - vgs/2014
-// https://www.shadertoy.com/view/lsBSDz
-
-
-/*{
-	"CREDIT": "",
-	"DESCRIPTION": "",
-	"CATEGORIES": [
-		"Generator"
-	],
-	"INPUTS": [
-		{
-			"NAME": "invert",
-			"TYPE": "bool",
-			"DEFAULT" : "1"
-		},
-		{
-			"NAME": "zoom",
-			"TYPE": "float",
-			"DEFAULT": 2.0,
-			"MIN": 0.25,
-			"MAX": 20.0
-		},
-		{
-			"NAME": "rotateCanvas",
-			"TYPE": "float",
-			"DEFAULT": 0.0,
-			"MIN": 0.0,
-			"MAX": 1.0
-		},
-		{
-			"NAME": "rotateLines",
-			"TYPE": "float",
-			"DEFAULT": 0.0,
-			"MIN": 0.0,
-			"MAX": 1.0
-		},
-		{
-			"NAME": "lineThickness",
-			"TYPE": "float",
-			"DEFAULT": 1.0,
-			"MIN": 0.1,
-			"MAX": 20.0
-		},
-		
-		{
-			"NAME": "lineLength",
-			"TYPE": "float",
-			"DEFAULT": 1.25,
-			"MIN": 0.05,
-			"MAX": 10.0
-		},
-		{
-			"NAME": "lines1",
-			"TYPE": "float",
-			"DEFAULT": 10.0,
-			"MIN": 1.0,
-			"MAX": 10.0
-		},
-		{
-			"NAME": "lines2",
-			"TYPE": "float",
-			"DEFAULT": 10.0,
-			"MIN": 1.0,
-			"MAX": 10.0
-		},
-		{
-			"NAME": "offset",
-			"TYPE": "float",
-			"DEFAULT": 0.0,
-			"MIN": -2.0,
-			"MAX": 2.0
-		},
-		{
-			"NAME": "motion",
-			"TYPE": "float",
-			"DEFAULT": 0.25,
-			"MIN": 0.0,
-			"MAX": 1.0
-		},
-		{
-			"NAME": "pos",
-			"TYPE": "point2D",
-			"DEFAULT": [0.5,0.5],
-			"MIN":[0.0,0.0],
-			"MAX":[1.0,1.0]
-		}
-	]
-}*/
+/*
+{
+  "CATEGORIES" : [
+    "Generator"
+  ],
+  "DESCRIPTION" : "",
+  "INPUTS" : [
+    {
+      "NAME" : "invert",
+      "TYPE" : "bool",
+      "DEFAULT" : true
+    },
+    {
+      "NAME" : "zoom",
+      "TYPE" : "float",
+      "MAX" : 20,
+      "DEFAULT" : 3.3019793033599854,
+      "MIN" : 0.25
+    },
+    {
+      "NAME" : "rotateCanvas",
+      "TYPE" : "float",
+      "MAX" : 1,
+      "DEFAULT" : 0.45078930258750916,
+      "MIN" : 0
+    },
+    {
+      "NAME" : "rotateLines",
+      "TYPE" : "float",
+      "MAX" : 1,
+      "DEFAULT" : 0.2777867317199707,
+      "MIN" : 0
+    },
+    {
+      "NAME" : "lineThickness",
+      "TYPE" : "float",
+      "MAX" : 20,
+      "DEFAULT" : 5.9209065437316895,
+      "MIN" : 0.10000000000000001
+    },
+    {
+      "NAME" : "lineLength",
+      "TYPE" : "float",
+      "MAX" : 10,
+      "DEFAULT" : 2.6872844696044922,
+      "MIN" : 0.050000000000000003
+    },
+    {
+      "NAME" : "lines1",
+      "TYPE" : "float",
+      "MAX" : 10,
+      "DEFAULT" : 6.8404679298400879,
+      "MIN" : 1
+    },
+    {
+      "NAME" : "lines2",
+      "TYPE" : "float",
+      "MAX" : 10,
+      "DEFAULT" : 9.7506446838378906,
+      "MIN" : 1
+    },
+    {
+      "NAME" : "offset",
+      "TYPE" : "float",
+      "MAX" : 2,
+      "DEFAULT" : 0.54888850450515747,
+      "MIN" : -2
+    },
+    {
+      "NAME" : "motion",
+      "TYPE" : "float",
+      "MAX" : 1,
+      "DEFAULT" : 0.82939350605010986,
+      "MIN" : 0
+    },
+    {
+      "NAME" : "pos",
+      "TYPE" : "point2D",
+      "MAX" : [
+        1,
+        1
+      ],
+      "DEFAULT" : [
+        0.5,
+        0.5
+      ],
+      "MIN" : [
+        0,
+        0
+      ]
+    }
+  ],
+  "ISFVSN" : "2",
+  "CREDIT" : ""
+}
+*/
 
 
 #define TAU 6.28318530718

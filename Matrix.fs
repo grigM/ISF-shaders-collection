@@ -132,7 +132,7 @@ void main(){
     st *= zoom;
     st = rotate2d(rotate*-TWO_PI) * st;
     
-    vec3 color = vec3(0.0);
+    vec3 color = vec3(255,255,255);
    
     vec2 ipos = floor(st);
     vec2 fpos = fract(st);
@@ -147,7 +147,7 @@ void main(){
     
     if  (invert) color = color *-1.0 + 1.0; //invert colors
     
-    if(color.r==0.0 && color.g== 0.0 && color.b == 0.0 ){
+    if(color.r==1.0 && color.g== 1.0 && color.b == 1.0 ){
     	alpha = 1.0;
     }
     

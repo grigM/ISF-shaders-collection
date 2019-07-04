@@ -4,7 +4,14 @@
     "Automatically Converted"
   ],
   "INPUTS" : [
-
+	{
+			"NAME": "speed",
+			"TYPE": "float",
+			"DEFAULT": 30.0,
+			"MIN": 0.0,
+			"MAX": 200.0
+		},
+		
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#34206.0"
 }
@@ -17,7 +24,7 @@ precision mediump float;
 
 #extension GL_OES_standard_derivatives : enable
 
-#define t TIME*30.
+
 #define r RENDERSIZE
 
 // Created by inigo quilez - iq/2015
@@ -40,20 +47,20 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 	vec2 p = fragCoord.xy / r.xy;
     
 	// animate
-	p.x += 0.01*t;
+	p.x += 0.01*( TIME*speed);
 	
 	// compute colors
 	vec3                col = pal( p.x, vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(1.0,1.0,1.0),vec3(0.0,0.33,0.67) );
-	if( p.y>(1.0/7.0) ) col = pal( p.x, vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(1.0,1.0,1.0),vec3(0.0,0.10,0.20) );
-	if( p.y>(2.0/7.0) ) col = pal( p.x, vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(1.0,1.0,1.0),vec3(0.3,0.20,0.20) );
-	if( p.y>(3.0/7.0) ) col = pal( p.x, vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(1.0,1.0,0.5),vec3(0.8,0.90,0.30) );
-	if( p.y>(4.0/7.0) ) col = pal( p.x, vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(1.0,0.7,0.4),vec3(0.0,0.15,0.20) );
-	if( p.y>(5.0/7.0) ) col = pal( p.x, vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(2.0,1.0,0.0),vec3(0.5,0.20,0.25) );
-	if( p.y>(6.0/7.0) ) col = pal( p.x, vec3(0.8,0.5,0.4),vec3(0.2,0.4,0.2),vec3(2.0,1.0,1.0),vec3(0.0,0.25,0.25) );
+	if( p.y>(1.0/6.0) ) col = pal( p.x, vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(1.0,1.0,1.0),vec3(0.0,0.10,0.20) );
+	if( p.y>(2.0/6.0) ) col = pal( p.x, vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(1.0,1.0,1.0),vec3(0.3,0.20,0.20) );
+	if( p.y>(3.0/6.0) ) col = pal( p.x, vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(1.0,1.0,0.5),vec3(0.8,0.90,0.30) );
+	if( p.y>(4.0/6.0) ) col = pal( p.x, vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(1.0,0.7,0.4),vec3(0.0,0.15,0.20) );
+	if( p.y>(5.0/6.0) ) col = pal( p.x, vec3(0.5,0.5,0.5),vec3(0.5,0.5,0.5),vec3(2.0,1.0,0.0),vec3(0.5,0.20,0.25) );
+	//if( p.y>(6.0/7.0) ) col = pal( p.x, vec3(0.8,0.5,0.4),vec3(0.2,0.4,0.2),vec3(2.0,1.0,1.0),vec3(0.0,0.25,0.25) );
 	
 	
 	// band
-	float f = fract(p.y*7.0);
+	float f = fract(p.y*6.0);
 	// borders
 	col *= smoothstep( 0.49, 0.47, abs(f-0.5) );
 	// shadowing

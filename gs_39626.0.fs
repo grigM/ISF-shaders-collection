@@ -62,6 +62,13 @@
         1
       ],
       "LABEL" : ""
+    },
+	{
+      "NAME" : "colorPos",
+      "TYPE" : "float",
+      "DEFAULT": 0.7,
+		"MIN": 0.0,
+		"MAX": 2.0
     }
 ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#39626.0"
@@ -87,11 +94,11 @@ void main( void ) {
 	float tH = sin(position.y * frequency + (TIME*speed));
 	
 	if(abs(tH - position.x) < thickness){
-		gl_FragColor = vec4(1.0);
+		gl_FragColor = color_1;
 	}
 	if(abs(position.y) < abs(tH - position.x)){
 		gl_FragColor = color_1;
-		if(distance(abs(position.y), abs(tH-position.x)) >= .7){
+		if(distance(abs(position.y), abs(tH-position.x)) >= colorPos){
 			gl_FragColor = color_2;
 		}
 	}

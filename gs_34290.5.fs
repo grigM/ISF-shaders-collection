@@ -10,21 +10,21 @@
 			"TYPE": "float",
 			"DEFAULT": 1.0,
 			"MIN": 0.0,
-			"MAX": 4.0
+			"MAX": 6.0
 		},
 		{
 			"NAME": "BALL_NUM",
 			"TYPE": "float",
 			"DEFAULT": 100.0,
 			"MIN": 0.0,
-			"MAX": 200.0
+			"MAX": 150.0
 		},
 		{
 			"NAME": "BALL_DIST",
 			"TYPE": "float",
 			"DEFAULT": 12.7,
 			"MIN": 0.0,
-			"MAX": 30.0
+			"MAX": 40.0
 		}
 		,
 		{
@@ -32,7 +32,7 @@
 			"TYPE": "float",
 			"DEFAULT": 7.7,
 			"MIN": 0.0,
-			"MAX": 15.0
+			"MAX": 35.0
 		}
 		,
 		{
@@ -41,6 +41,13 @@
 			"DEFAULT": 12.0,
 			"MIN": 0.0,
 			"MAX": 50.0
+		},
+		{
+			"NAME": "sincosIncr",
+			"TYPE": "float",
+			"DEFAULT": 2.0,
+			"MIN": 0.0,
+			"MAX": 5.0
 		}
 
   ],
@@ -80,7 +87,7 @@ void main( void ) {
 		color = mix(color, vec3(sin(o - t), sin(o*8.0+6.0 + t), cos(o*13.0*16.0 + t))*0.5+0.5, smoothstep(0.01, -0.01, d));
 		color = mix(color, IMG_NORM_PIXEL(backbuffer,mod(gl_FragCoord.xy / RENDERSIZE,1.0)).rgb, 0.01);
 		
-		o += 2.0 * PI / float(BALL_NUM);
+		o += sincosIncr * PI / float(BALL_NUM);
 	}
 	
 	gl_FragColor = vec4(color, 1.0 );

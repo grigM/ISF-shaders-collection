@@ -5,7 +5,27 @@
     "GLSLSandbox"
   ],
   "INPUTS" : [
-
+	{
+		"NAME": "speed",
+		"TYPE": "float",
+		"DEFAULT": 0.25,
+		"MIN": -3,
+		"MAX": 3
+	},
+	{
+		"NAME": "triangP1x",
+		"TYPE": "float",
+		"DEFAULT": 0.25,
+		"MIN": -0.7,
+		"MAX": 0.7
+	},
+	{
+		"NAME": "triangP1y",
+		"TYPE": "float",
+		"DEFAULT": 0.25,
+		"MIN": -3,
+		"MAX": 3
+	}
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#39884.0"
 }
@@ -94,9 +114,9 @@ void main (void) {
     
     float pattern = 0.0;
 
-    st = rotate2D(st,-PI*TIME*0.25);
+    st = rotate2D(st,-PI*TIME*speed);
     pattern =   triangle(st, 
-                         vec2(0.30,-0.5), 
+                         vec2(triangP1x,triangP1y), 
                          vec2(0.70,0.-0.5), 
                          vec2(0.5,1.0), 
                          0.01);

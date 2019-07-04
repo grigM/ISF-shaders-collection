@@ -12,6 +12,34 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/llj3Dm by shezard.  Some nightish scene",
   "INPUTS" : [
+  		{
+			"NAME": "noise_apm",
+			"TYPE": "float",
+			"DEFAULT": 1.5,
+			"MIN": 0,
+			"MAX": 2.0
+		},
+		{
+			"NAME": "mountain_vis",
+			"TYPE": "float",
+			"DEFAULT": 0.95,
+			"MIN": 0,
+			"MAX": 1.1
+		},
+		{
+			"NAME": "star_vis",
+			"TYPE": "float",
+			"DEFAULT": 40.0,
+			"MIN": 40,
+			"MAX": 60.0
+		},
+		{
+			"NAME": "moon_size",
+			"TYPE": "float",
+			"DEFAULT": 0.2,
+			"MIN": 0,
+			"MAX": 1.0
+		},
 
   ]
 }
@@ -30,7 +58,7 @@ float noise1d(in float p) {
 }
 
 float noise(in vec2 uv) {
-	return sin(1.5*uv.x)*sin(1.5*uv.y);
+	return sin(noise_apm*uv.x)*sin(noise_apm*uv.y);
 }
 
 const mat2 m = mat2( 0.80,  0.60, -0.60,  0.80 );
@@ -74,7 +102,7 @@ vec3 mountain(in vec2 p, in vec2 offset) {
        c = max(c,mountain);
     }
     
-    return c * (.95 + .05 * IMG_NORM_PIXEL(iChannel0,mod(p*.5,1.0)).rgb);
+    return c * (mountain_vis + .05 * IMG_NORM_PIXEL(iChannel0,mod(p*.5,1.0)).rgb);
 }
 
 vec3 scene( in vec2 p) {
@@ -83,9 +111,9 @@ vec3 scene( in vec2 p) {
     
     vec3 c = vec3(.9) * length(p+offset) + fbm2(p*20.0+20.0)*.0025; 
     
-    	 c = clamp(c,.0,.2) / length(p+offset) - fbm2(p+vec2(TIME*.01,0))*.025;
+    	 c = clamp(c,.0,moon_size) / length(p+offset) - fbm2(p+vec2(TIME*.1,0))*.025;
         
-    float stars = (1.0 - clamp(0.0,0.025,r*10.0) * 40.0) * .4 * (p.y * 3.0 + 1.0) * (.25 + fbm2(p*200.0)) * ceil(p.y);
+    float stars = (1.0 - clamp(0.0,0.025,r*10.0) * star_vis) * .4 * (p.y * 3.0 + 1.0) * (.25 + fbm2(p*200.0)) * ceil(p.y);
     
     c = max(c, stars);
     

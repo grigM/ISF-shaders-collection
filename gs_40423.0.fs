@@ -5,7 +5,30 @@
     "GLSLSandbox"
   ],
   "INPUTS" : [
-
+	{
+		"NAME": "speed",
+		"TYPE": "float",
+		"DEFAULT": 6.0,
+		"MIN": 0,
+		"MAX": 20.0
+		
+	},
+	{
+		"NAME": "ofset",
+		"TYPE": "float",
+		"DEFAULT": 0.0,
+		"MIN": 0,
+		"MAX": 2.0
+		
+	},
+	{
+		"NAME": "line_glow",
+		"TYPE": "float",
+		"DEFAULT": 2.0,
+		"MIN": 0.5,
+		"MAX": 2.0
+		
+	}
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#40423.0"
 }
@@ -35,7 +58,6 @@ precision mediump float;
 
 
 #define Resolution				RENDERSIZE
-#define Time					TIME
 
 
 float line( vec2 a, vec2 b, vec2 p )
@@ -64,9 +86,9 @@ void main( void ) {
 	signedUV.y += 0.2;
 	
 	vec3 finalColor = vec3( 0.0 );
-	float a = floor(mod(TIME*10.0,3.0)) * 2.0943951 + 1.5707693;
+	float a = floor(mod((TIME*speed)+ofset,3.0)) * 2.0943951 + 1.5707693;
 	float t = line( vec2(cos(a),sin(a)), vec2(cos(a+2.0943951),sin(a+2.0943951)), signedUV);
-	finalColor += vec3(pow(t,3.0));
+	finalColor += vec3(pow(t,line_glow));
 	
 
 

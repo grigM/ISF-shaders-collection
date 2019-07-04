@@ -16,7 +16,86 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/MscXRH by Shane.  A daytime version of my \"Cheap Cloud Flythrough\" example.",
   "INPUTS" : [
-
+	{
+            "NAME": "flight_speed",
+            "TYPE": "float",
+            "DEFAULT": 4.0,
+            "MIN": 0.0,
+            "MAX": 10.0
+    },
+    {
+            "NAME": "cloud_speed",
+            "TYPE": "float",
+            "DEFAULT": 1.0,
+            "MIN": 0.0,
+            "MAX": 5.0
+    },
+    {
+            "NAME": "cloud_distance_threshold",
+            "TYPE": "float",
+            "DEFAULT": 0.5,
+            "MIN": 0.35,
+            "MAX": 0.55
+    },
+    
+    {
+            "NAME": "FAR",
+            "TYPE": "float",
+            "DEFAULT": 60,
+            "MIN": 0,
+            "MAX": 100
+    },
+    {
+            "NAME": "lkAtx",
+            "TYPE": "float",
+            "DEFAULT": 0,
+            "MIN": -5.15,
+            "MAX": 5.15
+    },
+    {
+            "NAME": "lkAtY",
+            "TYPE": "float",
+            "DEFAULT": 0,
+            "MIN": -5.15,
+            "MAX": 5.15
+    },
+    
+    {
+            "NAME": "sunPosX",
+            "TYPE": "float",
+            "DEFAULT": 0,
+            "MIN": -15.15,
+            "MAX": 15.15
+    },
+    {
+            "NAME": "sunPosY",
+            "TYPE": "float",
+            "DEFAULT": 0,
+            "MIN": -15.15,
+            "MAX": 15.15
+    },
+    {
+            "NAME": "sunPosZ",
+            "TYPE": "float",
+            "DEFAULT": 6,
+            "MIN": -30.15,
+            "MAX": 30.15
+    },
+    
+    {
+            "NAME": "sunFade1",
+            "TYPE": "float",
+            "DEFAULT": 0.25,
+            "MIN": 0.0,
+            "MAX": 1.0
+    },
+    {
+            "NAME": "sunFade2",
+            "TYPE": "float",
+            "DEFAULT": 0.35,
+            "MIN": 0.0,
+            "MAX": 1.0
+    }
   ]
 }
 */
@@ -130,7 +209,7 @@ float trigNoise3D(in vec3 p){
     // IQ's cheap, texture-lookup noise function. Very efficient, but still 
     // a little too processor intensive for multiple layer usage in a largish 
     // "for loop" setup. Therefore, just one layer is being used here.
-    float n = n3D(p*8. + TIME*2.);
+    float n = n3D(p*8. + TIME*cloud_speed);
 
 
     // Two sinusoidal layers. I'm pretty sure you could get rid of one of 
@@ -167,7 +246,7 @@ void main()
     vec3 rd = normalize(vec3(gl_FragCoord.xy - RENDERSIZE.xy*.5, RENDERSIZE.y*.75)); 
 
     // Ray origin. Moving along the Z-axis.
-    vec3 ro = vec3(0., 0. , TIME*4.);
+    vec3 ro = vec3(lkAtx, lkAtY , TIME*flight_speed);
 
     // Cheap camera rotation.
     //
@@ -185,7 +264,7 @@ void main()
     // light directional and be done with it, but giving it some point-like qualities 
     // makes it a little more interesting. You could also rotate it in sync with the 
     // camera, like a light beam from a flying vehicle.
-    vec3 lp = vec3( 0., 1., 6.);
+    vec3 lp = vec3( sunPosX, sunPosY, 6.0);
     //lp.xz = lp.xz*rM;
     lp += ro;
     
@@ -213,7 +292,7 @@ void main()
     float d=1., t=0.;
 
     // Distance threshold. Higher numbers give thicker clouds, but fill up the screen too much.    
-    const float h = .5;
+    //const float h = .5;
 
 
     // Initializing the scene color to black, and declaring the surface position vector.
@@ -229,7 +308,7 @@ void main()
     vec3 sn = normalize(hash33(rd.yxz)*.03-rd);
 
     // Raymarching loop.
-    for (int i=0; i<64; i++) {
+    for (int i=0; i<int(FAR); i++) {
 
         // Loop break conditions. Seems to work, but let me
         // know if I've overlooked something.
@@ -247,7 +326,7 @@ void main()
         // case, it's distance. This is one of many ways to do it. In fact, you'll see variations on 
         // the following lines all over the place.
         //
-        ld = (h - d) * step(d, h); 
+        ld = (cloud_distance_threshold - d) * step(d, cloud_distance_threshold); 
         w = (1. - td) * ld;   
 
         // Use the weighting factor to accumulate density. How you do this is up to you. 
@@ -302,9 +381,9 @@ void main()
     float sun = clamp(dot(normalize(lp-ro), rd), 0.0, 1.0);
    
     // Combining the clouds, sky and sun to produce the final color.
-    col += vec3(1.0,0.5,0.1)*pow(sun, 5.0)*0.25; 
+    col += vec3(1.0,0.5,0.1)*pow(sun, 5.0)*sunFade1; 
     col = mix(col, sky, smoothstep(0., 25., t));
- 	col += vec3(1.0,0.5,0.1)*pow(sun, 16.0)*0.35; 	
+ 	col += vec3(1.0,0.5,0.1)*pow(sun, 16.0)*sunFade2; 	
  
     // Done.
     gl_FragColor = vec4(min(col, 1.), 1.0);

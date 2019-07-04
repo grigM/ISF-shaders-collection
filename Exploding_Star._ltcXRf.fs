@@ -11,10 +11,55 @@
     "Automatically Converted"
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/ltcXRf by slembcke.  Hacking on Duke's Dusty Nebula 4: https:\/\/www.shadertoy.com\/view\/MsVXWW\n\nI wanted to experiment with changing the raymarching scheme a bit. Ended up adding a star, and making it more explodey. Might try adding self occlusion next.",
+  
   "INPUTS" : [
+  	
+	{
+		"NAME": "NebulaNoiseIncrSmth",
+		"TYPE": "float",
+		"DEFAULT": 4.5,
+		"MIN": 0,
+		"MAX": 10
+	},
+	{
+		"NAME": "starBrightEmitSmth",
+		"TYPE": "float",
+		"DEFAULT": 110,
+		"MIN": 0,
+		"MAX": 300
+	},
+	{
+		"NAME": "densityMax",
+		"TYPE": "float",
+		"DEFAULT": 1.2,
+		"MIN": 0,
+		"MAX": 2
+	},
+		
+	{
+		"NAME": "noiseFreqIncr",
+		"TYPE": "float",
+		"DEFAULT": 1.733733,
+		"MIN": 0.1,
+		"MAX": 1.733733
+	},
+	{
+		"NAME": "nudge",
+		"TYPE": "float",
+		"DEFAULT": 0.739513,
+		"MIN": 0,
+		"MAX": 1
+	},
     {
       "NAME" : "iMouse",
       "TYPE" : "point2D"
+    },
+	{
+      "NAME": "desaturation",
+      "TYPE": "float",
+      "MIN": 0.0,
+      "MAX": 1,
+      "DEFAULT": 0.0
     }
   ]
 }
@@ -32,7 +77,7 @@
 // This spiral noise works by successively adding and rotating sin waves while increasing frequency.
 // It should work the same on all computers since it's not based on a hash function like some other noises.
 // It can be much faster than other noise functions if you're ok with some repetition.
-const float nudge = 0.739513;	// size of perpendicular vector
+//const float nudge = 0.739513;	// size of perpendicular vector
 float normalizer = 1.0 / sqrt(1.0 + nudge*nudge);	// pythagorean theorem on that perpendicular to maintain scale
 float SpiralNoiseC(vec3 p){
     float n = 0.0;	// noise amount
@@ -47,7 +92,7 @@ float SpiralNoiseC(vec3 p){
         p.xz += vec2(p.z, -p.x) * nudge;
         p.xz *= normalizer;
         // increase the frequency
-        iter *= 1.733733;
+        iter *= noiseFreqIncr;
     }
     return n;
 }
@@ -65,7 +110,7 @@ float SpiralNoise3D(vec3 p){
 }
 
 float NebulaNoise(vec3 p){
-   float final = p.y + 4.5;
+   float final = p.y + NebulaNoiseIncrSmth;
     final -= SpiralNoiseC(p.xyz); // mid-range noise
     final += SpiralNoiseC(p.zxy*0.5123 + 100.0)*4.0; // large scale features
     final -= SpiralNoise3D(p); // more large scale features, but 3d
@@ -127,8 +172,8 @@ void main(){
             float dist = map(pos);
 			float advance = clamp(0.05*dist, 0.01, max_advance);
             
-            float density = max(1.2 - dist, 0.0);
-            vec3 emit = starColor*(110.0*advance*density/dot(pos, pos));
+            float density = max(densityMax - dist, 0.0);
+            vec3 emit = starColor*(starBrightEmitSmth*advance*density/dot(pos, pos));
             float block = 1.0 - pow(0.05, density*advance/0.05);
             sum += (1.0 - sum.a)*vec4(emit, block);
 
@@ -144,5 +189,9 @@ void main(){
     
     sum.rgb = pow(sum.rgb, vec3(2.2));
     sum.rgb = sum.rgb/(1.0 + sum.rgb);
-    gl_FragColor = vec4(sum.xyz,1.0);
+    
+    vec3 grayXfer = vec3(0.3, 0.59, 0.11);
+	vec3 gray = vec3(dot(grayXfer, sum.xyz));
+	
+    gl_FragColor = vec4(mix(sum.xyz, gray, desaturation),1.0);
 }

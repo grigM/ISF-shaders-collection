@@ -64,7 +64,7 @@ void main(){
   
   //not sure how to go about centering this to match the point2D XY, (Y is not perfectly centered)
   st.y+= 0.0;
-  st -= pos/RENDERSIZE;
+  st -= (pos*5.0)/RENDERSIZE;
   
   
   //st.x += -0.5;
@@ -72,7 +72,7 @@ void main(){
   float d = 0.0;
 
   // Remap the space to -1. to 1.
-  st = st * 2.-1.;
+  //st = st * 2.-1.;
 
 
   // Make the distance field

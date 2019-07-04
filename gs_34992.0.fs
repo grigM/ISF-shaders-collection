@@ -10,6 +10,11 @@
 			"DEFAULT": 2.0,
 			"MIN": 0.0,
 			"MAX": 16.0
+	},
+	{
+			"NAME": "invers",
+			"TYPE": "bool",
+			"DEFAULT": false
 	}
 
   ],
@@ -38,6 +43,9 @@ void render (float a){
 #define PI acos(-1.)
 
 void main( void ) {
+	if(invers){
+		gl_FragColor = vec4(1.0);
+	}
 	vec2 pos = vec2(gl_FragCoord.x, RENDERSIZE.y - gl_FragCoord.y);
 	
 	vec2 center = RENDERSIZE / 2.;

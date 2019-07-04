@@ -57,7 +57,7 @@
 */
 
 
-// Author @patriciogv - 2015
+
 // Title: Zigzag
 
 
@@ -111,8 +111,10 @@ void main() {
   float b = floor(1.0+sin((x+1.)*PI));
   float f = fract(x);
 	
-	st.y += sin(TIME*2.0);
+  st.y += sin(TIME*2.0);
   color = vec3( fillY(st,mix(a,b,f),smoooth) );
 
-  gl_FragColor = vec4( color, 1.0 );
+	//if(color>0){
+	  gl_FragColor = vec4( color, 1.0 );
+	//}
 }
