@@ -33,6 +33,7 @@
 		"MIN": 0.0,
 		"MAX": 20.0
 	},
+	
     {
       "NAME" : "color_1",
       "TYPE" : "color",

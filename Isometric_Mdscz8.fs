@@ -26,7 +26,7 @@ mat2 z=mat2(1,1,1,-1);
 float m(vec2 p)
 {
     return step(cos(
-        1.4257*(texture(iChannel0, 
+        1.4257*(IMG_NORM_PIXEL(iChannel0, 
                           floor(z*p*.1)
                           /64.,-32.).
                 r >.5 ? p.y : p.x)),

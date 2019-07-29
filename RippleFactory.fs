@@ -54,7 +54,7 @@
         	{
       "MAX": 2.000,
       "MIN": 0.001,
-      "DEFAULT":0.5,
+      "DEFAULT":0.0,
       "NAME": "saturation",
       "TYPE": "float"
     },

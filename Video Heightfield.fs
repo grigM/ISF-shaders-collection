@@ -2,26 +2,19 @@
 	"CREDIT": "by nikharron",
 	"DESCRIPTION": "",
 	"CATEGORIES": [
-		"XXX"
+		"Distortion Effect"
 	],
 	"INPUTS": [
 		{
-			"NAME": "iChannel0",
+			"NAME": "inputImage",
 			"TYPE": "image"
 		},
 		{
 			"NAME": "MAXHEIGHT",
 			"TYPE": "float",
-			"DEFAULT": 0.25,
-			"MIN": -2.0,
+			"DEFAULT": 0.0,
+			"MIN": 0.0,
 			"MAX":2.0
-		},
-		{
-			"NAME": "SLICES",
-			"TYPE": "float",
-			"DEFAULT": 64.0,
-			"MIN": 1.0,
-			"MAX": 256.0
 		},
 		{
 			"NAME": "OVERDRIVE",
@@ -29,48 +22,13 @@
 			"DEFAULT": 1.0,
 			"MIN": 1.0,
 			"MAX": 10.0
-		},
-		{
-			"NAME": "MOVEX",
-			"TYPE": "float",
-			"DEFAULT": 0.0,
-			"MIN": -10.0,
-			"MAX": 10.0
-		},
-		{
-			"NAME": "MOVEY",
-			"TYPE": "float",
-			"DEFAULT": 0.0,
-			"MIN": -10.0,
-			"MAX": 10.0
-		},
-		{
-			"NAME": "MOVEZ",
-			"TYPE": "float",
-			"DEFAULT": 2.0,
-			"MIN": 0.1,
-			"MAX": 10.0
-		},
-		{
-			"NAME": "XROTATE",
-			"TYPE": "float",
-			"DEFAULT": 0.5,
-			"MIN": 0.0,
-			"MAX": 1.0
-		},
-		{
-			"NAME": "YROTATE",
-			"TYPE": "float",
-			"DEFAULT": 0.5,
-			"MIN": 0.0,
-			"MAX": 1.0
 		}
 	]
 }*/
 
 // Based on "video heightfield" "by simesgreen: https://www.shadertoy.com/view/Xss3zr#
 
-//const int _Stzps = 128;
+const int _Steps = 20;
 const vec3 lightDir = vec3(0.577, 0.577, 0.577);
 
 // transforms
@@ -120,18 +78,10 @@ intersectBox(vec3 ro, vec3 rd, vec3 boxmin, vec3 boxmax, out float tnear, out fl
 	return hit;
 }
 
-float luminance(sampler2D tex, vec2 uv)
+float luminance(vec2 uv)
 {
-	vec3 c = texture2D(tex, uv).xyz;
+	vec3 c = IMG_NORM_PIXEL(inputImage, uv).rgb;
 	return dot(c, vec3(0.33, 0.33, 0.33));
-}
-
-vec2 gradient(sampler2D tex, vec2 uv, vec2 texelSize)
-{
-	float h = luminance(tex, uv);
-	float hx = luminance(tex, uv + texelSize*vec2(1.0, 0.0));	
-	float hy = luminance(tex, uv + texelSize*vec2(0.0, 1.0));
-	return vec2(hx - h, hy - h);
 }
 
 vec2 worldToTex(vec3 p)
@@ -143,10 +93,7 @@ vec2 worldToTex(vec3 p)
 
 float heightField(vec3 p)
 {
-	//return sin(p.x*4.0)*sin(p.z*4.0);
-	//return luminance(iChannel0, p.xz*0.5+0.5)*2.0-1.0;
-	//return luminance(iChannel0, worldToTex(p))*0.5;
-	return luminance(iChannel0, worldToTex(p))*MAXHEIGHT*OVERDRIVE; //FACTOR IS SCALING in Z
+	return luminance(worldToTex(p))*MAXHEIGHT*OVERDRIVE; //FACTOR IS SCALING in Z
 }
 
 bool traceHeightField(vec3 ro, vec3 rayStep, out vec3 hitPos)
@@ -155,10 +102,7 @@ bool traceHeightField(vec3 ro, vec3 rayStep, out vec3 hitPos)
 	bool hit = false;
 	float pH = 0.0;
 	vec3 pP = p;
-	for(int i=0; i< 256; i++) {
-		
-		if (i > int(SLICES)) { break; }
-		
+	for(int i=0; i<_Steps; i++) {
 		float h = heightField(p);
 		if ((p.y < h) && !hit) {
 			hit = true;
@@ -187,19 +131,14 @@ void main(void)
     // compute ray origin and direction
     float asp = 1.0; //RENDERSIZE.x / RENDERSIZE.y;
     vec3 rd = normalize(vec3(asp*pixel.x, pixel.y, -2.0));
-    vec3 ro = vec3(-1.*MOVEX, -1.*MOVEY, MOVEZ);
+    vec3 ro = vec3(0., 0., 2.);
 		
-	vec2 mouse = vec2(YROTATE,XROTATE);
-
 	// rotate view
-    float ax = (mouse.y + .25) * TWOPI;
+    float ax = TWOPI * 1.75;
 
     rd = rotateX(rd, ax);
     ro = rotateX(ro, ax);
 		
-    float ay = (mouse.x + .5) * TWOPI;
-    rd = rotateY(rd, ay);
-    ro = rotateY(ro, ay);
 	
 	// intersect with bounding box
     bool hit;	
@@ -212,7 +151,7 @@ void main(void)
 	vec3 pnear = ro + rd*tnear;
     vec3 pfar = ro + rd*tfar;
 	
-    float stepSize = length(pfar - pnear) / float(SLICES);
+    float stepSize = length(pfar - pnear) / float(_Steps);
 	
     vec4 col = vec4(0,0,0,0);
     if(hit)
@@ -224,7 +163,7 @@ void main(void)
 		if (hit) {
 			
 			vec2 uv = worldToTex(hitPos);
-			col = texture2D(iChannel0, uv);
+			col = IMG_NORM_PIXEL(inputImage, uv);
 	}
      }
 

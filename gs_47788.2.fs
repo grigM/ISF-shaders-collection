@@ -5,7 +5,30 @@
     "GLSLSandbox"
   ],
   "INPUTS" : [
-
+	{
+			"NAME": "size",
+			"TYPE": "float",
+			"DEFAULT":  0.9375,
+			"MIN": 0.0,
+			"MAX": 3.0
+			
+		},
+		{
+			"NAME": "noise_speed",
+			"TYPE": "float",
+			"DEFAULT":  1.0,
+			"MIN": 0.1,
+			"MAX": 5.0
+			
+		},
+		{
+			"NAME": "speed",
+			"TYPE": "float",
+			"DEFAULT":  1.0,
+			"MIN": 0.1,
+			"MAX": 5.0
+			
+		},
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#47788.2"
 }
@@ -38,7 +61,7 @@ float fbm(vec2 p){
 	f+= .1250*noise(p); p*= m*2.01;
 	f+= .0625*noise(p); p*= m*2.04;
 	
-	f/= 0.9375;
+	f/= size;
 	
 	return f;
 }
@@ -46,7 +69,7 @@ float fbm(vec2 p){
 
 void main( void ) {
 	vec2 position = gl_FragCoord.xy - RENDERSIZE / 2.0;
-	float ss=.5+0.5*sin(.5*TIME);
-	float color = smoothstep(3.0, 1.0, abs(fbm(position*ss)*length(position) - 50.0 + fract(atan(position.y,atan(position.y, position.x))*TIME*0.01 * 4.0 - 3.141 / 2.0) * 7.0));
+	float ss=.5+0.5*sin(.5*(TIME*noise_speed));
+	float color = smoothstep(3.0, 1.0, abs(fbm(position*ss)*length(position) - 50.0 + fract(atan(position.y,atan(position.y, position.x))*(TIME*speed)*0.01 * 4.0 - 3.141 / 2.0) * 7.0));
 	gl_FragColor = vec4(vec3(color), 1.0 );
 }

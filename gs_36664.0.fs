@@ -36,7 +36,10 @@ vec3 star(vec2 uv,float scale,float seed){
 }
 
 void main(void){
-	vec2 sp = (vv_FragNormCoord*0.5+0.5)*1.0-0.5;
+	//vec2 sp = (vv_FragNormCoord*0.5+0.5)*1.0-0.5;
+	
+	vec2 sp=(gl_FragCoord.xy*2.-RENDERSIZE.xy)/min(RENDERSIZE.x,RENDERSIZE.y); 
+	
 	sp = mix(sp,sp/dot(sp,sp),max(0.0,sin(TIME*0.1)));
 	vec4 b=IMG_NORM_PIXEL(backbuffer,mod(abs(fract(sp*0.5*sin(TIME*0.2)/RENDERSIZE.xy)),1.0));
 	vec2 uv=sp*0.5;

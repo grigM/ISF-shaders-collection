@@ -98,7 +98,8 @@ void main() {
 		t+=d;
 	}
 	vec3 ld=normalize(vec3(1.0,0.6,2.0));
-	gl_FragColor.rgb=mix(vec3(0.1,0.1,0.5)*0.4,vec3(1.0,1.0,0.8),pow(0.5+0.5*dot(pln,ld),0.7));
-	gl_FragColor.rgb=mix(vec3(0.5,0.6,1.0),gl_FragColor.rgb,exp(-t*0.02));
+	//gl_FragColor.rgb=mix(vec3(0.1,0.1,0.5)*0.4,vec3(1.0,1.0,0.8),pow(0.5+0.5*dot(pln,ld),0.7));
+	gl_FragColor = vec4(mix(vec3(0.1,0.1,0.5)*0.4,vec3(1.0,1.0,0.8),pow(0.5+0.5*dot(pln,ld),0.7)), 1.0);
+	gl_FragColor =  vec4(mix(vec3(0.5,0.6,1.0),gl_FragColor.rgb,exp(-t*0.02)), 1.0);
 	
 }

@@ -15,6 +15,7 @@
       "TYPE" : "image",
       "NAME" : "inputImage"
     }
+    
   ]
 }
 */

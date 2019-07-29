@@ -17,6 +17,7 @@
      		"NAME" : "inputImage",
       		"TYPE" : "image"
     	},
+    	
     	{
 			"NAME": "warp_grid_size",
 			"TYPE": "float",

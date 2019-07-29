@@ -9,18 +9,25 @@
 	[
 	
 				{
+			"NAME": "ColorR",
+			"TYPE": "float",
+			"MIN": 0.0,
+			"MAX": 1.0,
+			"DEFAULT": 1.0
+		},
+				{
 			"NAME": "ColorG",
 			"TYPE": "float",
 			"MIN": 0.0,
 			"MAX": 1.0,
-			"DEFAULT": 0.0
+			"DEFAULT": 1.0
 		},
 				{
 			"NAME": "ColorB",
 			"TYPE": "float",
 			"MIN": 0.0,
 			"MAX": 1.0,
-			"DEFAULT": 0.0
+			"DEFAULT": 1.0
 		},
 		{
 			"NAME": "Stripe",
@@ -114,6 +121,6 @@ void main() {
 	gl_FragColor = vec4(color, 1.0);
  	gl_FragColor.b *= ColorB;
 	gl_FragColor.g *= ColorG;
-	gl_FragColor.r *= 0.5;
+	gl_FragColor.r *= ColorR;
 			
 	}

@@ -19,15 +19,28 @@
     {
       "TYPE" : "image",
       "NAME" : "inputImage"
-    }
+    },
+    
+    {
+			"NAME": "Num_cells",
+			"TYPE": "float",
+			"MIN": 64.0,
+			"MAX": 512.0,
+			"DEFAULT": 256.0
+		},
+		
+		 {
+			"NAME": "circle_mask",
+			"TYPE": "bool",
+			"DEFAULT": false
+		},
   ]
 }
 */
 
 
-//#define SMOOTH_MIN
+#define SMOOTH_MIN
 
-int Num_cells = 256;
 
 float random(float seed, float t)
 {
@@ -49,7 +62,7 @@ void main() {
     
     float min_d2 = 100.0;
     float cell_id = -1.0;
-    for(int i = 0; i < Num_cells; i++)
+    for(int i = 0; i < int(Num_cells); i++)
     {
         float seed = float(i) / float(Num_cells);
         float x = random(seed, 0.0 + 0.001 * TIME);
@@ -58,20 +71,22 @@ void main() {
         //distance squared (faster than actual distance)
         float d2 = (uv.x - x) * (uv.x - x) + (uv.y - y) * (uv.y - y);
         
-#if defined SMOOTH_MIN
-        if(cell_id < 0.0f) { cell_id = seed; }
-        float k = 0.05;
-		d2 = poly_smin(d2, min_d2, k);
-        //cell_id = poly_smin(cell_id, seed, k);
-        if(d2 < min_d2) { cell_id = seed; min_d2 = d2;}
-#else
+		if(circle_mask){
+        	if(cell_id < 0.0) { cell_id = seed; }
+        		float k = 0.05;
+				d2 = poly_smin(d2, min_d2, k);
+        		//cell_id = poly_smin(cell_id, seed, k);
+        	if(d2 < min_d2) { 
+        		cell_id = seed; min_d2 = d2;
+        	}
+		}else{
    
-        if(d2 < min_d2 || cell_id < 0.0)
-        {
-            cell_id = seed;
-            min_d2 = d2;
-        }
-#endif
+        	if(d2 < min_d2 || cell_id < 0.0)
+        	{
+            	cell_id = seed;
+            	min_d2 = d2;
+        	}
+		}
         
         //plate_id = d2;
         
@@ -80,6 +95,6 @@ void main() {
     cell_id = clamp(cell_id, 0.0, 1.0);
     vec4 cell_color = IMG_NORM_PIXEL(iChannel1,mod(vec2(cell_id, 0.25),1.0));
     
-    gl_FragColor = IMG_NORM_PIXEL(inputImage,mod(uv + 0.25 * cell_color.xy,1.0));
+    gl_FragColor = IMG_NORM_PIXEL(inputImage, mod(uv  * (cell_color.xy*2.0),1.0));
     //gl_FragColor = cell_color;
 }
