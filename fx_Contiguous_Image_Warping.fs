@@ -238,6 +238,9 @@ vec3 plot(vec2 U)
     vec3 point = vec3(1.,.7,0.);
     vec3 pattern = c.x*2.*(sin(c.x*120.)*.1+.9)*interior;
     //vec3 col = IMG_NORM_PIXEL(inputImage,mod(uv3,1.0)).xyz;
+    
+    
+    
     vec3 col = IMG_NORM_PIXEL(inputImage, uv3).xyz;
     
     

@@ -14,7 +14,14 @@
   ],
   "DESCRIPTION" : "Automatically converted from https:\/\/www.shadertoy.com\/view\/Md23RK by fizzer.  An experiment to produce a terrain using a variant of the diamond-square algorithm. Requires optimisation.",
   "INPUTS" : [
-
+	{
+			"NAME": "speed",
+			"TYPE": "float",
+			"DEFAULT": 0.5,
+			"MIN": 0.0,
+			"MAX": 1.0
+			
+		},
   ]
 }
 */
@@ -71,7 +78,7 @@ void main() {
 
 
 
-	time=TIME*0.4;
+	time=TIME*speed;
 	vec2 uv=(gl_FragCoord.xy / RENDERSIZE.xy)*2.0-vec2(1.0);
 	uv.x*=RENDERSIZE.x/RENDERSIZE.y;
 	

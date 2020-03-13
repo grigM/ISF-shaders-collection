@@ -8,9 +8,16 @@
 	{
 		"NAME": "speed",
 		"TYPE": "float",
-		"DEFAULT": 1,
+		"DEFAULT": 2,
 		"MIN": 0,
 		"MAX": 10
+	},
+	{
+		"NAME": "move_ofset",
+		"TYPE": "float",
+		"DEFAULT": 0,
+		"MIN": -2,
+		"MAX": 2
 	},
 	{
 		"NAME": "rowCount",
@@ -111,7 +118,7 @@ void main() {
   float b = floor(1.0+sin((x+1.)*PI));
   float f = fract(x);
 	
-  st.y += sin(TIME*2.0);
+  st.y += sin((TIME*speed)+move_ofset);
   color = vec3( fillY(st,mix(a,b,f),smoooth) );
 
 	//if(color>0){

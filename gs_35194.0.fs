@@ -4,16 +4,56 @@
     "Automatically Converted"
   ],
   "INPUTS" : [
-
+	{
+			"NAME": "speed",
+			"TYPE": "float",
+			"DEFAULT": 0.5,
+			"MIN": 0.0,
+			"MAX": 6.0
+	},
+	{
+			"NAME": "count",
+			"TYPE": "float",
+			"DEFAULT": 32.0,
+			"MIN": 0.0,
+			"MAX": 80.0
+	},
+	{
+			"NAME": "period",
+			"TYPE": "float",
+			"DEFAULT": 2.0,
+			"MIN": 0.0,
+			"MAX": 6.0
+	},
+	{
+			"NAME": "amo",
+			"TYPE": "float",
+			"DEFAULT": 10.0,
+			"MIN": 5.0,
+			"MAX": 30.0
+	},
+	
+	{
+			"NAME": "phase_shift",
+			"TYPE": "float",
+			"DEFAULT": 0.1,
+			"MIN": 0.0,
+			"MAX": 0.2
+	},
+	
+	{
+			"NAME": "lines_blur",
+			"TYPE": "float",
+			"DEFAULT": 0.01,
+			"MIN": 0.01,
+			"MAX": 2.0
+	}
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#35194.0"
 }
 */
 
 
-#ifdef GL_ES
-precision mediump float;
-#endif
 
 
 float d2y(float d){ d*= 400.; return 1./(d*d);}
@@ -57,11 +97,11 @@ float f(float x){
 }
 
 
-#define N 32
+//#define N 32
 // hauteur de la vague
 float wave(float x, int i){
     float i_f=float(i);
-    float fy = (10.2-0.1/i_f)*sin(x*2.+2.8*TIME+0.1*i_f);
+    float fy = (amo-0.1/i_f)*sin(x*period+2.8*(TIME*speed)+phase_shift*i_f);
     return fy * (0.4+0.3*cos(x));
 }
 
@@ -73,8 +113,8 @@ void main(void)
 
 	float yf = 0.*d2y(distance(uv.y*2., f(uv.x)));
     vec3 col = vec3(1.);
-    for(int i = 0; i<N; ++i){
-        float i_f = float(i)*0.01+0.1;
+    for(int i = 0; i<int(count); ++i){
+        float i_f = float(i)*lines_blur+0.1;
         float y = d2y2(distance(2.*uv.y, wave(uv.x, i)),i_f);
         col -= 1.0*y ;
         

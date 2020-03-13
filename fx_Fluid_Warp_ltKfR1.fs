@@ -11,8 +11,9 @@
     	{
       "TYPE" : "image",
       "NAME" : "inputImage"
-    	}
-    
+    	},
+    	
+        
     ],
     "PASSES": [
         {

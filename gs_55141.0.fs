@@ -5,7 +5,14 @@
     "GLSLSandbox"
   ],
   "INPUTS" : [
-
+	{
+			"NAME": "speed",
+			"TYPE": "float",
+			"DEFAULT": 1.0,
+			"MIN": 0.0,
+			"MAX": 3.0
+			
+		}
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#55141.0"
 }
@@ -49,11 +56,11 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     uv *= vec2(1.3333, 1.);  // /(.75,1.)
 
     float m = 0.;
-    float i = -RADIUS + fract(iTime*.25) * ISTEP;
+    float i = -RADIUS + fract((iTime*speed)*.25) * ISTEP;
     for(int j = 0; j<100; j++) {
 
         vec2 iuv = uv - vec2(i, 0.);
-        iuv *= rot(iTime*2. - i*10.);
+        iuv *= rot((iTime*speed)*2. - i*10.);
 
         float l = length(iuv);
         float r = sqrt(RADIUS_EXP2 - i*i);

@@ -4,7 +4,15 @@
     "Automatically Converted"
   ],
   "INPUTS" : [
-
+	{
+			"NAME": "saturation",
+			"LABEL": "saturation",
+			"TYPE": "float",
+			"DEFAULT": 0.85,
+			"MIN": 0.0,
+			"MAX": 1.0
+		}
+	
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#35499.2"
 }
@@ -50,6 +58,15 @@ void main( void ) {
 		float cb = pow(c,25.0);
 	        float cr = cb;
 	        float cg = cr;
-		gl_FragColor = vec4(cr*1.5,cg,cb*5.0,1.0);
+	        
+	        
+	        vec3 f = vec3(cr*1.5,cg,cb*5.0);
+	        
+	      	f=mix(vec3(length(f)),f,saturation);
+	       
+		//gl_FragColor = vec4(cr*1.5,cg,cb*5.0,1.0);
+		
+		
+			gl_FragColor = vec4(f,1.);
 	
 } 

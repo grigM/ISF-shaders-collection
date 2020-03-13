@@ -16,7 +16,24 @@
         0,
         0
       ]
-    }
+    },
+    
+    {
+		"NAME": "waves_line_count",
+		"TYPE": "float",
+		"DEFAULT": 30.0,
+		"MIN": 1,
+		"MAX": 60
+	},
+	{
+		"NAME": "freq",
+		"TYPE": "float",
+		"DEFAULT": 5.0,
+		"MIN": 1,
+		"MAX": 20
+	},
+	
+	
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#4401.1"
 }
@@ -93,8 +110,8 @@ void main(void)
     w *= mouse.y;
 	
     const float linew = 0.005;
-    const int waves = 30;
-    const float freq = 5.0;
+    float waves = waves_line_count;
+    //const float freq = 5.0;
 	
     float c = 0.0;
     float yp = -1.0;
@@ -102,7 +119,7 @@ void main(void)
     float anim = floor(TIME*4.0);
 	
     // check waves bottom to top
-    for(int i=0; i<waves; i++) {
+    for(int i=0; i<int(waves); i++) {
 	//float y = -0.9 + fbm(p.x*freq + float(i)*10.0 + mouse.x*10.0) * w + float(i)*0.05;
         //float y = -0.9 + fbm(p.x*freq + (float(i)+anim)*10.0 + mouse.x*10.0) * w + float(i)*0.05;
 	float y = -0.9 + fbm( vec2(p.x*freq + float(i)*10.0 + mouse.x*10.0, TIME*0.3)) * w + float(i)*0.05;

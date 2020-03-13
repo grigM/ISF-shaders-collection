@@ -4,10 +4,16 @@
     "Automatically Converted",
     "GLSLSandbox"
   ],
+  "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#38937.2",
   "INPUTS" : [
-
+    {
+      "NAME" : "iscolor",
+      "TYPE" : "bool",
+      "DEFAULT" : 0,
+      "LABEL" : "iscolor"
+    }
   ],
-  "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#38937.2"
+  "ISFVSN" : "2"
 }
 */
 
@@ -54,9 +60,16 @@ void main( void )
 		float rc = draw_ring(p2, i * increment, 0.02);
 		if(rc > 0.0)
 		{
-			color = rc * vec3(sin(i) * 0.25 + 0.5
-				         ,sin(i + TIME) * 0.5 + 0.5 
-					 ,sin(i + TIME * 1.2) * 0.5 + 0.5);
+			if(iscolor){
+			color = rc * vec3(sin(i) * 0.25 + 0.5,
+				         sin(i + TIME) * 0.5 + 0.5, 
+					 sin(i + TIME * 1.2) * 0.5 + 0.5);
+			}else{
+				
+				color = rc * vec3(sin(i) * 0.25 + 0.5,
+				         sin(i) * 0.25 + 0.5, 
+					 sin(i) * 0.25 + 0.5);
+			}
 			break;
 		}
 	}

@@ -6,9 +6,9 @@
 	],
 	"INPUTS": [
 		{
-			"NAME": "from",
-			"TYPE": "image"
-		},
+      "TYPE" : "image",
+      "NAME" : "inputImage"
+    },
 		{
 			"NAME": "to",
 			"TYPE": "image"
@@ -82,12 +82,12 @@ float ease2(float t) {
 
 void main() {
   vec2 p = gl_FragCoord.xy / RENDERSIZE.xy;
-  vec4 color1 = IMG_NORM_PIXEL(from, p);
+  vec4 color1 = IMG_NORM_PIXEL(inputImage, p);
   vec4 color2 = IMG_NORM_PIXEL(to, p);
   vec2 disp = displace(color1, p, 0.33, 0.7, 1.0-ease1(progress));
   vec2 disp2 = displace(color2, p, 0.33, 0.5, ease2(progress));
   vec4 dColor1 = IMG_NORM_PIXEL(to, disp);
-  vec4 dColor2 = IMG_NORM_PIXEL(from, disp2);
+  vec4 dColor2 = IMG_NORM_PIXEL(inputImage, disp2);
   float val = ease1(progress);
   vec3 gray = vec3(dot(min(dColor2, dColor1).rgb, vec3(0.299, 0.587, 0.114)));
   dColor2 = vec4(gray, 1.0);

@@ -62,7 +62,7 @@ void main( void ) {
 	ray.dir = normalize( camera_side * pos.x + camera_up * pos.y + focus * camera_dir);
 	
 	float dist;
-	for( int  i = 0; i < 16; i++){
+	for( int  i = 0; i < 2; i++){
 		dist = calc_dist(ray.pos);
 		if( dist < 0.01){
 			break;

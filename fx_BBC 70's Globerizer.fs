@@ -6,9 +6,9 @@
 	],
 	"INPUTS": [
 		{
-			"NAME": "iChannel0",
-			"TYPE": "image"
-		},
+     		"NAME" : "inputImage",
+      		"TYPE" : "image"
+    	},
 		{
 			"LABEL":"RADIUS",
 			"NAME": "RADIUS",
@@ -48,8 +48,9 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec3 norm = vec3( uv, sqrt( BBC2 - dot(uv,uv) ));
     float s = 1.0-fract (atan( norm.z, norm.x ) / 6.283185307179586);
     float t = 1.0-fract (0.5-asin( 1.7*norm.y ) / 3.14159265358979);
+    
     fragColor = (dot(uv,uv) > BBC ? vec4( 0.0, 0.0, 0.0, 1.0 ) : 
-                 texture2D(iChannel0, fract (vec2( s + iGlobalTime * -0.1, t))));
+                 IMG_NORM_PIXEL(inputImage, fract (vec2( s + iGlobalTime * -0.1, t))));
 }
 
 

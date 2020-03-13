@@ -5,7 +5,79 @@
     "GLSLSandbox"
   ],
   "INPUTS" : [
-
+	{
+			"NAME": "charWidth",
+			"TYPE": "float",
+			"DEFAULT":  0.01,
+			"MIN": 0.0053,
+			"MAX": 0.02
+			
+		},
+		{
+			"NAME": "charHeight",
+			"TYPE": "float",
+			"DEFAULT":  0.02,
+			"MIN": 0.003,
+			"MAX": 0.05
+			
+		},
+		{
+			"NAME": "charMax",
+			"TYPE": "float",
+			"DEFAULT": 80.0,
+			"MIN": 0.0,
+			"MAX": 200.0
+			
+		},
+		{
+			"NAME": "tabMax",
+			"TYPE": "float",
+			"DEFAULT": 9.0,
+			"MIN": 0.0,
+			"MAX": 20.0
+			
+		},
+		{
+			"NAME": "charsPerTab",
+			"TYPE": "float",
+			"DEFAULT": 4.0,
+			"MIN": 0.0,
+			"MAX": 15.0
+			
+		},
+		{
+			"NAME": "jitter",
+			"TYPE": "float",
+			"DEFAULT": 0.0,
+			"MIN": 0.0,
+			"MAX": 5.0
+			
+		},
+		{
+			"NAME": "warp",
+			"TYPE": "float",
+			"DEFAULT": 0.0,
+			"MIN": 0.0,
+			"MAX": 1.0
+			
+		},
+		{
+			"NAME": "speed",
+			"TYPE": "float",
+			"DEFAULT":  0.2,
+			"MIN": 0.1,
+			"MAX": 5.0
+			
+		},
+		{
+			"NAME": "columns",
+			"TYPE": "float",
+			"DEFAULT":  5.0,
+			"MIN": 1.0,
+			"MAX": 5.0
+			
+		}
+		
   ],
   "DESCRIPTION" : "Automatically converted from http:\/\/glslsandbox.com\/e#48285.0"
 }
@@ -27,16 +99,15 @@ float iTime;
 vec3  iResolution;
 
 // --------[ Original ShaderToy begins here ]---------- //
-const float charWidth = 0.0013;
-const float charHeight = 0.003;
+//const float charWidth = 0.0053;
 
-const float charMax = 200.0;
-const float tabMax = 12.0;
-const float charsPerTab = 4.0;
+//const float charMax = 200.0;
+//const float tabMax = 12.0;
+//const float charsPerTab = 4.0;
 
-const float speed = 0.05;
-const float jitter = 0.;
-const float warp = 0.0;
+
+//const float jitter = 0.;
+//const float warp = 0.0;
 
 const mat2 m = mat2(1.616, 1.212, -1.212, 1.616);
 
@@ -94,14 +165,15 @@ vec2 fbm22(vec2 p) {
 }
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+	
 	float screenWidth = iResolution.x / iResolution.y;
     vec2 uv = fragCoord.xy / iResolution.y;
     
     float green = 0.0;
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < int(columns); ++i) {
         float id = float(i);
 
-        float x = uv.x - 0.2 * screenWidth * id;
+        float x = uv.x - (screenWidth/columns) * id;
         float y = uv.y - speed * iTime + jitter * fbm12(vec2(0.2 * iTime, id));
 
         vec2 w = fbm22(0.2 * uv + vec2(0.1 * iTime, 4.0 * id));

@@ -19,15 +19,13 @@
       ]
     }
   ],
-  "PERSISTENT_BUFFERS" : [
-    "backbuffer"
-  ],
   "PASSES" : [
     {
       "TARGET" : "backbuffer",
       "PERSISTENT" : true
     }
-  ]
+  ],
+  "ISFVSN" : "2"
 }
 */
 

@@ -4,7 +4,6 @@
 
   ],
   "CATEGORIES" : [
-    "tunnel",
     "Automatically Converted",
     "Shadertoy"
   ],
